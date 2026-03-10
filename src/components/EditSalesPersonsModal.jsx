@@ -44,8 +44,6 @@ const EditSalespersonModal = ({
 
   useEffect(() => {
     if (!show) return;
-    if (!selectedPerson) return;
-
     reset({
       firstName: selectedPerson.firstName ?? "",
       lastName: selectedPerson.lastName ?? "",
