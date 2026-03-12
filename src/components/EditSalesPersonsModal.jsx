@@ -56,18 +56,18 @@ const EditSalespersonModal = ({
   }, [show, selectedPerson, reset]);
 
   const normalize = (v) => (v ?? "").trim().toLowerCase();
-  const isDuplicateSalesperson = (firstName, lastName) => {
-    const currentId = selectedPerson?.id;
-
-    return (salesPersons ?? []).some((sp) => {
-      if (sp.id === currentId) return false;
-
-      return (
+  const isDuplicateSalesperson = (
+    firstName,
+    lastName,
+    currentId,
+    salesPersons,
+  ) =>
+    (salesPersons ?? []).some(
+      (sp) =>
+        sp.id !== currentId &&
         normalize(sp.firstName) === normalize(firstName) &&
-        normalize(sp.lastName) === normalize(lastName)
-      );
-    });
-  };
+        normalize(sp.lastName) === normalize(lastName),
+    );
 
   return (
     <Dialog open={show} onClose={handleClose} fullWidth maxWidth="sm">
@@ -92,8 +92,12 @@ const EditSalespersonModal = ({
               validate: () => {
                 const { firstName, lastName } = getValues();
                 return (
-                  !isDuplicateSalesperson(firstName, lastName) ||
-                  "Salesperson already exists"
+                  !isDuplicateSalesperson(
+                    firstName,
+                    lastName,
+                    selectedPerson.id,
+                    salesPersons,
+                  ) || "Salesperson already exists"
                 );
               },
             }}
@@ -116,8 +120,12 @@ const EditSalespersonModal = ({
               validate: () => {
                 const { firstName, lastName } = getValues();
                 return (
-                  !isDuplicateSalesperson(firstName, lastName) ||
-                  "Salesperson already exists"
+                  !isDuplicateSalesperson(
+                    firstName,
+                    lastName,
+                    selectedPerson.id,
+                    salesPersons,
+                  ) || "Salesperson already exists"
                 );
               },
             }}

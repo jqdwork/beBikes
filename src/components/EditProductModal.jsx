@@ -64,7 +64,6 @@ const EditProductModal = ({
       <DialogContent sx={{ display: "grid", gap: 2, mt: 1 }}>
         <Stack spacing={2} sx={{ mt: 1 }}>
           <Controller
-            name="name"
             control={control}
             rules={{
               required: "Name is required",

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import "./global.css";
 import {
   Box,
   Drawer,

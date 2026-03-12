@@ -7,7 +7,7 @@ import salespersonsApi from "../api/salesPersonsApi.js";
 import Table from "../components/Table.jsx";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CreateModal from "../components/CreateModal.jsx";
+import CreateModal from "../components/createModal.jsx";
 import Notify from "../components/Notify.jsx";
 
 const Sales = () => {
