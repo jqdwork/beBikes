@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CreateModal from "../components/createModal.jsx";
+import CreateModal from "../components/CreateModal.jsx";
 import Notify from "../components/Notify.jsx";
 
 const Sales = () => {
