@@ -1,11 +1,17 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import salesApi from "../api/salesApi.js";
 import productsApi from "../api/productsApi.js";
 import customersApi from "../api/customersApi.js";
 import salespersonsApi from "../api/salesPersonsApi.js";
-import Table from "../components/Table.jsx";
-import { Box, Typography, Button, TextField } from "@mui/material";
+import DataTable from "../components/DataTable.jsx";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CreateModal from "../components/createModal.jsx";
 import Notify from "../components/Notify.jsx";
@@ -15,7 +21,7 @@ const Sales = () => {
   const [show, setShow] = useState(false);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [successM, setSuccessM] = useState("");
+  const [notify, setNotify] = useState({ message: "", severity: "info" });
 
   const {
     data: sales,
@@ -25,6 +31,16 @@ const Sales = () => {
     queryFn: salesApi.getSales,
     queryKey: ["sales"],
   });
+
+  useEffect(() => {
+    if (errorList) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setNotify({
+        message: `Error: ${errorList.status}: ${errorList.message}`,
+        severity: "error",
+      });
+    }
+  }, [errorList]);
   const { data: products } = useQuery({
     queryKey: ["products"],
     queryFn: productsApi.getProducts,
@@ -41,7 +57,7 @@ const Sales = () => {
     mutationFn: (body) => salesApi.createSale(body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sales"] });
-      setSuccessM("Sale created successfully");
+      setNotify({ message: "Sale created successfully", severity: "info" });
       setShow(false);
     },
   });
@@ -100,9 +116,6 @@ const Sales = () => {
     });
   }, [sales, from, to]);
 
-  if (loadingList) return <p>Loading...</p>;
-  if (errorList) return <p>{errorList.message}</p>;
-
   return (
     <Box>
       <Box display="grid" alignItems="center" mb={3}>
@@ -150,8 +163,18 @@ const Sales = () => {
           Clear
         </Button>
       </Box>
-      <Table columns={columns} data={filteredSales} />
-      <Notify message={successM} onClose={() => setSuccessM("")} />
+      {loadingList ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DataTable columns={columns} data={filteredSales} />
+      )}
+      <Notify
+        message={notify.message}
+        onClose={() => setNotify({ message: "", severity: "info" })}
+        severity={notify.severity}
+      />
       <CreateModal
         show={show}
         handleClose={() => setShow(false)}

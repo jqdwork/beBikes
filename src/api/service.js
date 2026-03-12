@@ -9,7 +9,10 @@ export const request = async (method, path, body) => {
 
   if (!resp.ok) {
     const text = await resp.text();
-    throw new Error(text || `Request failed: ${resp.status}`);
+
+    const error = new Error(text || `Request Failed`);
+    error.status = resp.status;
+    throw error;
   }
 
   if (resp.status === 204) return null;

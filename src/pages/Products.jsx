@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import productsApi from "../api/productsApi";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { Box, Typography, Button } from "@mui/material";
-import Table from "../components/Table";
+import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import DataTable from "../components/DataTable";
 import EditProductModal from "../components/EditProductModal";
 import Notify from "../components/Notify";
 
 const Product = () => {
   const [show, setShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [successM, setSuccessM] = useState("");
+  const [notify, setNotify] = useState("");
 
   const queryClient = useQueryClient();
   const {
@@ -29,11 +29,24 @@ const Product = () => {
     mutationFn: ({ id, body }) => productsApi.updateProduct(id, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      setSuccessM("Product updated successfully");
+      setNotify({
+        message: "Product updated successfully",
+        severity: "success",
+      });
       setSelectedProduct(null);
       setShow(false);
     },
   });
+
+  useEffect(() => {
+    if (error) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setNotify({
+        message: `Error: ${error.status}: ${error.message}`,
+        severity: "error",
+      });
+    }
+  }, [error]);
 
   const handleEdit = (row) => {
     setSelectedProduct(row);
@@ -63,9 +76,6 @@ const Product = () => {
 
     mutate({ id: selectedProduct.id, body });
   };
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
 
   const columns = [
     {
@@ -122,9 +132,18 @@ const Product = () => {
 
         <Box />
       </Box>
-
-      <Table columns={columns} data={products} />
-      <Notify message={successM} onClose={() => setSuccessM("")} />
+      {isLoading ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DataTable columns={columns} data={products} />
+      )}
+      <Notify
+        message={notify.message}
+        onClose={() => setNotify({ message: "", severity: "info" })}
+        severity={notify.severity}
+      />
       <EditProductModal
         show={show}
         handleClose={handleClose}

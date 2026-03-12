@@ -1,17 +1,17 @@
 import salesPersonApi from "../api/salesPersonsApi";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Typography } from "@mui/material";
-import Table from "../components/Table";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import DataTable from "../components/DataTable";
 import { Button } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditSalesPersonModal from "../components/EditSalesPersonsModal";
 import Notify from "../components/Notify";
 
 const SalesPerson = () => {
   const [show, setShow] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
-  const [successM, setSuccessM] = useState("");
+  const [notify, setNotify] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -24,6 +24,16 @@ const SalesPerson = () => {
     queryKey: ["salesPersons"],
   });
 
+  useEffect(() => {
+    if (error) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setNotify({
+        message: `Error: ${error.status}: ${error.message}`,
+        severity: "error",
+      });
+    }
+  }, [error]);
+
   const {
     reset,
     isPending,
@@ -33,7 +43,10 @@ const SalesPerson = () => {
     mutationFn: ({ id, body }) => salesPersonApi.updateSalesPerson(id, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["salesPersons"] });
-      setSuccessM("Sales Person updated successfully");
+      setNotify({
+        message: "Sales Person updated successfully",
+        severity: "success",
+      });
       setSelectedPerson(null);
       setShow(false);
     },
@@ -67,9 +80,6 @@ const SalesPerson = () => {
 
     mutate({ id: selectedPerson.id, body });
   };
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
 
   const columns = [
     {
@@ -122,9 +132,19 @@ const SalesPerson = () => {
 
         <Box />
       </Box>
+      {isLoading ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <DataTable columns={columns} data={salesPersons} />
+      )}
 
-      <Table columns={columns} data={salesPersons} />
-      <Notify message={successM} onClose={() => setSuccessM("")} />
+      <Notify
+        message={notify.message}
+        onClose={() => setNotify({ massage: "", severity: "info" })}
+        severity={notify.severity}
+      />
       <EditSalesPersonModal
         show={show}
         selectedPerson={selectedPerson}

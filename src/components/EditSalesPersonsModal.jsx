@@ -105,10 +105,8 @@ const EditSalespersonModal = ({
               <TextField
                 label="First Name"
                 {...field}
-                value={field.value ?? ""}
                 error={!!fieldState.error}
                 helperText={fieldState.error?.message}
-                fullWidth
               />
             )}
           />
@@ -133,10 +131,8 @@ const EditSalespersonModal = ({
               <TextField
                 label="Last Name"
                 {...field}
-                value={field.value ?? ""}
                 error={!!fieldState.error}
                 helperText={fieldState.error?.message}
-                fullWidth
               />
             )}
           />
@@ -150,10 +146,8 @@ const EditSalespersonModal = ({
               <TextField
                 label="Address"
                 {...field}
-                value={field.value ?? ""}
                 error={!!fieldState.error}
                 helperText={fieldState.error?.message}
-                fullWidth
               />
             )}
           />
@@ -161,14 +155,7 @@ const EditSalespersonModal = ({
             name="phone"
             control={control}
             rules={{ required: "Phone number is required" }}
-            render={({ field }) => (
-              <TextField
-                label="Phone"
-                {...field}
-                value={field.value ?? ""}
-                fullWidth
-              />
-            )}
+            render={({ field }) => <TextField label="Phone" {...field} />}
           />
           <Controller
             name="startDate"
@@ -180,8 +167,6 @@ const EditSalespersonModal = ({
                 slotProps={{ inputLabel: { shrink: true } }}
                 type="date"
                 {...field}
-                value={field.value ?? ""}
-                fullWidth
               />
             )}
           />
@@ -195,22 +180,13 @@ const EditSalespersonModal = ({
                 slotProps={{ inputLabel: { shrink: true } }}
                 type="date"
                 {...field}
-                value={field.value ?? ""}
-                fullWidth
               />
             )}
           />
           <Controller
             name="manager"
             control={control}
-            render={({ field }) => (
-              <TextField
-                label="Manager"
-                {...field}
-                value={field.value ?? ""}
-                fullWidth
-              />
-            )}
+            render={({ field }) => <TextField label="Manager" {...field} />}
           />
           {!!error && (
             <Typography color="error" variant="body2">

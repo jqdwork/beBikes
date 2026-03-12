@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import salesApi from "../api/salesApi";
-import Table from "../components/Table";
+import DataTable from "../components/DataTable";
+import { buildSalesReport } from "../utils/reportUtils";
 import {
   Box,
   Typography,
@@ -13,61 +14,6 @@ import {
 } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
 
-const quarterKey = (dateStr) => {
-  if (!dateStr) return null;
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return null;
-  const quarter = Math.floor(date.getMonth() / 3) + 1;
-  return `${date.getFullYear()}-Q${quarter}`;
-};
-
-const commissionOf = (sale) => {
-  const price = Number(sale.product?.salePrice ?? 0);
-  const percent = Number(sale.product?.commissionPercentage ?? 0);
-  return (price * percent) / 100;
-};
-
-const buildReport = (sales, selectedQuarter) => {
-  const list = Array.isArray(sales) ? sales : [];
-
-  const quarterSet = new Set();
-  const totalsByPerson = new Map();
-
-  for (const s of list) {
-    const q = quarterKey(s.date);
-    if (!q) continue;
-    quarterSet.add(q);
-
-    if (selectedQuarter && q !== selectedQuarter) continue;
-
-    const sp = s.salesPerson;
-    const name = sp ? `${sp.firstName} ${sp.lastName}` : "Unknown";
-    const commission = commissionOf(s);
-
-    if (!totalsByPerson.has(name)) {
-      totalsByPerson.set(name, { name, salesCount: 0, totalCommission: 0 });
-    }
-
-    const row = totalsByPerson.get(name);
-    row.salesCount += 1;
-    row.totalCommission += commission;
-  }
-
-  const summaryRows = Array.from(totalsByPerson.values())
-    .map((r) => ({
-      ...r,
-      totalCommission: Number(r.totalCommission.toFixed(2)),
-    }))
-    .sort((a, b) => b.totalCommission - a.totalCommission);
-
-  return {
-    quarters: Array.from(quarterSet).sort(),
-    labels: summaryRows.map((r) => r.name),
-    values: summaryRows.map((r) => r.totalCommission),
-    summaryRows,
-  };
-};
-
 const Report = () => {
   const [quarter, setQuarter] = useState("");
 
@@ -77,7 +23,7 @@ const Report = () => {
   });
 
   const { quarters, labels, values, summaryRows } = useMemo(
-    () => buildReport(sales, quarter),
+    () => buildSalesReport(sales, quarter),
     [sales, quarter],
   );
 
@@ -140,7 +86,7 @@ const Report = () => {
         <Typography variant="h6" mb={1} textAlign="center">
           Summary
         </Typography>{" "}
-        <Table columns={columns} data={summaryRows} />
+        <DataTable columns={columns} data={summaryRows} />
       </Box>
     </Box>
   );
