@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import salesApi from "../api/salesApi";
 import DataTable from "../components/DataTable";
@@ -22,9 +22,9 @@ const Report = () => {
     queryFn: salesApi.getSales,
   });
 
-  const { quarters, labels, values, summaryRows } = useMemo(
-    () => buildSalesReport(sales, quarter),
-    [sales, quarter],
+  const { quarters, labels, values, summaryStats } = buildSalesReport(
+    sales,
+    quarter,
   );
 
   const columns = [
@@ -86,7 +86,7 @@ const Report = () => {
         <Typography variant="h6" mb={1} textAlign="center">
           Summary
         </Typography>{" "}
-        <DataTable columns={columns} data={summaryRows} />
+        <DataTable columns={columns} data={summaryStats} />
       </Box>
     </Box>
   );

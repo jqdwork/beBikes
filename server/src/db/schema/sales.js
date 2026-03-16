@@ -1,7 +1,7 @@
 import { pgTable, serial, date, doublePrecision } from "drizzle-orm/pg-core";
-import { customers } from "./customers";
-import { products } from "./products";
-import { salePersons } from "./salePersons";
+import { customers } from "./customers.js";
+import { products } from "./products.js";
+import { salePersons } from "./salePersons.js";
 
 export const sales = pgTable("sales", {
   id: serial("id").primaryKey(),
