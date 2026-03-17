@@ -1,17 +1,17 @@
-import { pgTable, serial, date, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, integer, date, doublePrecision } from "drizzle-orm/pg-core";
 import { customers } from "./customers.js";
 import { products } from "./products.js";
 import { salePersons } from "./salePersons.js";
 
 export const sales = pgTable("sales", {
-  id: serial("id").primaryKey(),
-  productsId: serial("productsId")
+  id: integer("id").primaryKey(),
+  productsId: integer("productsId")
     .notNull()
     .references(() => products.id),
-  customersId: serial("customersId")
+  customersId: integer("customersId")
     .notNull()
     .references(() => customers.id),
-  salePersonsId: serial("salePersonsId")
+  salePersonsId: integer("salePersonsId")
     .notNull()
     .references(() => salePersons.id),
   date: date("date"),

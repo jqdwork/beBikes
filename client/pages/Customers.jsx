@@ -31,14 +31,13 @@ const Customer = () => {
     {
       key: "name",
       header: "Name",
-      render: (row) => `${row.firstName} ${row.lastName}`,
     },
     {
       key: "address",
       header: "Address",
     },
     {
-      key: "phone",
+      key: "phoneNumber",
       header: "Phone Number",
     },
     {

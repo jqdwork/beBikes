@@ -101,7 +101,7 @@ const Product = () => {
       render: (row) => `$${Number(row.salePrice ?? 0).toFixed(2)}`,
     },
     {
-      key: "qtyOnHand",
+      key: "quantityOnHand",
       header: "Quantity On Hand",
     },
     {

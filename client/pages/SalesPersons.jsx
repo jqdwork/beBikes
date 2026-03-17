@@ -72,7 +72,7 @@ const SalesPerson = () => {
       firstName: values.firstName,
       lastName: values.lastName,
       address: values.address,
-      phone: values.phone,
+      phone: values.phoneNumber,
       startDate: values.startDate,
       terminationDate: values.terminationDate,
       manager: values.manager,
@@ -92,7 +92,7 @@ const SalesPerson = () => {
       header: "Address",
     },
     {
-      key: "phone",
+      key: "phoneNumber",
       header: "Phone Number",
     },
     {

@@ -1,18 +1,23 @@
 import express from "express";
-import { productsRoutes } from "./routes/index.js";
+import {
+  productsRoutes,
+  customersRoutes,
+  salesRoutes,
+  salePersonsRoutes,
+} from "./routes/index.js";
 import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = ["https://white-water-0cb109f1e.2.azurestaticapps.net"];
+
 app.use(express.json());
 
 app.use("/api/products", productsRoutes);
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://white-water-0cb109f1e.2.azurestaticapps.net",
-];
+app.use("/api/customers", customersRoutes);
+app.use("/api/sales", salesRoutes);
+app.use("/api/salesPersons", salePersonsRoutes);
 
 app.use(
   cors({

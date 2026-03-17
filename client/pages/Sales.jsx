@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import salesApi from "../api/salesApi.js";
 import productsApi from "../api/productsApi.js";
@@ -15,6 +15,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import CreateModal from "../components/CreateModal.jsx";
 import Notify from "../components/Notify.jsx";
+import { commissionOf } from "../utils/reportUtils.js";
 
 const Sales = () => {
   const queryClient = useQueryClient();
@@ -70,51 +71,45 @@ const Sales = () => {
     {
       key: "product",
       header: "Product",
-      render: (row) => row.product?.name,
+      render: (row) => row.products?.name,
     },
     {
       key: "customer",
       header: "Customer",
-      render: (row) => `${row.customer?.firstName} ${row.customer?.lastName}`,
+      render: (row) => `${row.customers?.name}`,
     },
     {
       key: "date",
       header: "Date",
-      render: (row) => new Date(row.date).toLocaleDateString(),
+      render: (row) => new Date(row.sales.date).toLocaleDateString(),
     },
     {
       key: "price",
       header: "Price",
-      render: (row) => `$${Number(row.product?.salePrice).toFixed(2)}`,
+      render: (row) => `$${Number(row.products?.salePrice).toFixed(2)}`,
     },
     {
       key: "salesPerson",
       header: "Salesperson",
       render: (row) =>
-        `${row.salesPerson?.firstName} ${row.salesPerson?.lastName}`,
+        `${row.salePersons?.firstName} ${row.salePersons?.lastName}`,
     },
     {
       key: "commission",
       header: "Commission",
-      render: (row) => {
-        const price = row.product?.salePrice ?? 0;
-        const percent = row.product?.commissionPercentage ?? 0;
-        const commission = (price * percent) / 100;
-        return `$${commission.toFixed(2)}`;
-      },
+      render: (row) => `$${commissionOf({ product: row.products }).toFixed(2)}`,
     },
   ];
-  const filteredSales = useMemo(() => {
-    const start = from ? new Date(`${from}T00:00:00`) : null;
-    const end = to ? new Date(`${to}T23:59:59.999`) : null;
 
-    return (sales ?? []).filter((row) => {
-      const d = new Date(row.date);
-      if (start && d < start) return false;
-      if (end && d > end) return false;
-      return true;
-    });
-  }, [sales, from, to]);
+  const start = from ? new Date(`${from}T00:00:00`) : null;
+  const end = to ? new Date(`${to}T23:59:59.999`) : null;
+
+  const filteredSales = (sales ?? []).filter((row) => {
+    const date = new Date(row.date);
+    if (start && date < start) return false;
+    if (end && date > end) return false;
+    return true;
+  });
 
   return (
     <Box>

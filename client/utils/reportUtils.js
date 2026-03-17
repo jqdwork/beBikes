@@ -7,8 +7,8 @@ export const quarterKey = (dateStr) => {
 };
 
 export const commissionOf = (sale) => {
-  const price = Number(sale.product?.salePrice ?? 0);
-  const percent = Number(sale.product?.commissionPercentage ?? 0);
+  const price = Number(sale.products?.salePrice ?? 0);
+  const percent = Number(sale.products?.commissionPercentage ?? 0);
   return (price * percent) / 100;
 };
 
@@ -19,13 +19,13 @@ export const buildSalesReport = (sales, selectedQuarter) => {
   const totalsByPerson = new Map();
 
   for (const sale of listSales) {
-    const quarter = quarterKey(sale.date);
+    const quarter = quarterKey(sale.sales.date);
     if (!quarter) continue;
     quarterSet.add(quarter);
 
     if (selectedQuarter && quarter !== selectedQuarter) continue;
 
-    const sp = sale.salesPerson;
+    const sp = sale.salePersons;
     const name = sp ? `${sp.firstName} ${sp.lastName}` : "Unknown";
     const commission = commissionOf(sale);
 
