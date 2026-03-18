@@ -51,7 +51,7 @@ const Sales = () => {
     queryFn: customersApi.getCustomers,
   });
   const { data: salespersons } = useQuery({
-    queryKey: ["salespersons"],
+    queryKey: ["salesPersons"],
     queryFn: salespersonsApi.getSalesPersons,
   });
   const createSaleMutation = useMutation({
