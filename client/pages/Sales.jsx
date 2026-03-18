@@ -97,7 +97,7 @@ const Sales = () => {
     {
       key: "commission",
       header: "Commission",
-      render: (row) => `$${commissionOf({ product: row.products }).toFixed(2)}`,
+      render: (row) => `$${commissionOf(row.products).toFixed(2)}`,
     },
   ];
 

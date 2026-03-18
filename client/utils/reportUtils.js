@@ -6,9 +6,9 @@ export const quarterKey = (dateStr) => {
   return `${date.getFullYear()}-Q${quarter}`;
 };
 
-export const commissionOf = (sale) => {
-  const price = Number(sale.product?.salePrice ?? 0);
-  const percent = Number(sale.product?.commissionPercentage ?? 0);
+export const commissionOf = (product) => {
+  const price = Number(product?.salePrice ?? 0);
+  const percent = Number(product?.commissionPercentage ?? 0);
   return (price * percent) / 100;
 };
 
@@ -27,7 +27,7 @@ export const buildSalesReport = (sales, selectedQuarter) => {
 
     const sp = sale.salePersons;
     const name = sp ? `${sp.firstName} ${sp.lastName}` : "Unknown";
-    const commission = commissionOf(sale);
+    const commission = commissionOf(sale.products);
 
     if (!totalsByPerson.has(name)) {
       totalsByPerson.set(name, { name, salesCount: 0, totalCommission: 0 });

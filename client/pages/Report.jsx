@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import salesApi from "../api/salesApi";
 import DataTable from "../components/DataTable";
+import { commissionOf } from "../utils/reportUtils";
 import { buildSalesReport } from "../utils/reportUtils";
 import {
   Box,
@@ -19,7 +20,7 @@ const Report = () => {
 
   const { data: sales = [] } = useQuery({
     queryKey: ["sales"],
-    queryFn: salesApi.getSales,
+    queryFn: () => salesApi.getSales("", ""),
   });
 
   const { quarters, labels, values, summaryStats } = buildSalesReport(
@@ -39,7 +40,7 @@ const Report = () => {
     {
       key: "totalCommission",
       header: "Total Commission ($)",
-      render: (row) => `$${row.totalCommission.toFixed(2)}`,
+      render: (row) => `$${commissionOf(row.products).toFixed(2)}`,
     },
   ];
 
