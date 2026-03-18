@@ -4,18 +4,50 @@ import { products } from "../db/schema/products.js";
 import { customers } from "../db/schema/customers.js";
 import { salePersons } from "../db/schema/salePersons.js";
 import { Router } from "express";
-import { eq } from "drizzle-orm";
+import { eq, gte, lte, and } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
+    const { from, to } = req.query;
+    console.log("from:", from, "to:", to); // ← add this
+
+    const conditions = [];
+    if (from) conditions.push(gte(sales.date, from));
+    if (to) conditions.push(lte(sales.date, to));
+
     const data = await db
       .select()
       .from(sales)
       .leftJoin(products, eq(sales.productsId, products.id))
       .leftJoin(customers, eq(sales.customersId, customers.id))
-      .leftJoin(salePersons, eq(sales.salePersonsId, salePersons.id));
+      .leftJoin(salePersons, eq(sales.salePersonsId, salePersons.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined);
+
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch sales" });
+  }
+});
+
+router.post("/filter", async (req, res) => {
+  try {
+    const { from, to } = req.body;
+    console.log("from:", from, "to:", to);
+
+    const conditions = [];
+    if (from) conditions.push(gte(sales.date, from));
+    if (to) conditions.push(lte(sales.date, to));
+
+    const data = await db
+      .select()
+      .from(sales)
+      .leftJoin(products, eq(sales.productsId, products.id))
+      .leftJoin(customers, eq(sales.customersId, customers.id))
+      .leftJoin(salePersons, eq(sales.salePersonsId, salePersons.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined);
 
     res.json(data);
   } catch (error) {

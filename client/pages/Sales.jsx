@@ -29,8 +29,8 @@ const Sales = () => {
     isLoading: loadingList,
     error: errorList,
   } = useQuery({
-    queryFn: salesApi.getSales,
-    queryKey: ["sales"],
+    queryFn: () => salesApi.getSales(from, to),
+    queryKey: ["sales", from, to],
   });
 
   useEffect(() => {
@@ -101,16 +101,6 @@ const Sales = () => {
     },
   ];
 
-  const start = from ? new Date(`${from}T00:00:00`) : null;
-  const end = to ? new Date(`${to}T23:59:59.999`) : null;
-
-  const filteredSales = (sales ?? []).filter((row) => {
-    const date = new Date(row.date);
-    if (start && date < start) return false;
-    if (end && date > end) return false;
-    return true;
-  });
-
   return (
     <Box>
       <Box display="grid" alignItems="center" mb={3}>
@@ -163,7 +153,7 @@ const Sales = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <DataTable columns={columns} data={filteredSales} />
+        <DataTable columns={columns} data={sales} />
       )}
       <Notify
         message={notify.message}

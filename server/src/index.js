@@ -9,7 +9,10 @@ import {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const allowedOrigins = ["https://white-water-0cb109f1e.2.azurestaticapps.net"];
+const allowedOrigins = [
+  "https://white-water-0cb109f1e.2.azurestaticapps.net",
+  "http://localhost:5173",
+];
 
 app.use(express.json());
 
