@@ -7,8 +7,8 @@ export const quarterKey = (dateStr) => {
 };
 
 export const commissionOf = (sale) => {
-  const price = Number(sale.products?.salePrice ?? 0);
-  const percent = Number(sale.products?.commissionPercentage ?? 0);
+  const price = Number(sale.product?.salePrice ?? 0);
+  const percent = Number(sale.product?.commissionPercentage ?? 0);
   return (price * percent) / 100;
 };
 

@@ -11,7 +11,6 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const { from, to } = req.query;
-    console.log("from:", from, "to:", to); // ← add this
 
     const conditions = [];
     if (from) conditions.push(gte(sales.date, from));
@@ -35,7 +34,6 @@ router.get("/", async (req, res) => {
 router.post("/filter", async (req, res) => {
   try {
     const { from, to } = req.body;
-    console.log("from:", from, "to:", to);
 
     const conditions = [];
     if (from) conditions.push(gte(sales.date, from));

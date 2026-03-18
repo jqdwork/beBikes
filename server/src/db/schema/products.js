@@ -12,7 +12,7 @@ export const products = pgTable("products", {
   manufacturer: varchar("manufacturer", { length: 255 }),
   style: varchar("style", { length: 255 }),
   purchasePrice: doublePrecision("purchasePrice"),
-  salePrice: doublePrecision("salePrice "),
+  salePrice: doublePrecision("salePrice"),
   qty: integer("qty"),
   quantityOnHand: integer("quantityOnHand"),
   commissionPercentage: doublePrecision("commissionPercentage"),
