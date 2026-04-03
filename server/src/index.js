@@ -9,6 +9,7 @@ import {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+//allow origins
 const allowedOrigins = [
   "https://be-spoked-bikes-one.vercel.app",
   "http://localhost:5173",
