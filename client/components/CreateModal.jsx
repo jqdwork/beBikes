@@ -104,7 +104,7 @@ const CreateModal = ({
                 <Select {...field} label="Customer">
                   {customers.map((customer) => (
                     <MenuItem key={customer.id} value={customer.id}>
-                      {customer.firstName} {customer.lastName}
+                      {customer.name}
                     </MenuItem>
                   ))}
                 </Select>

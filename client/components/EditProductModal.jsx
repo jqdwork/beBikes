@@ -32,7 +32,7 @@ const EditProductModal = ({
       style: "",
       purchasePrice: "",
       salePrice: "",
-      qtyOnHand: "",
+      quantityOnHand: "",
       commissionPercentage: "",
     },
   });
@@ -45,7 +45,7 @@ const EditProductModal = ({
       style: selectedProduct?.style ?? "",
       purchasePrice: selectedProduct?.purchasePrice ?? "",
       salePrice: selectedProduct?.salePrice ?? "",
-      qtyOnHand: selectedProduct?.qtyOnHand ?? "",
+      quantityOnHand: selectedProduct?.quantityOnHand ?? "",
       commissionPercentage: selectedProduct?.commissionPercentage ?? "",
     });
   }, [show, selectedProduct, reset]);
@@ -64,6 +64,7 @@ const EditProductModal = ({
       <DialogContent sx={{ display: "grid", gap: 2, mt: 1 }}>
         <Stack spacing={2} sx={{ mt: 1 }}>
           <Controller
+            name="name"
             control={control}
             rules={{
               required: "Name is required",
@@ -127,7 +128,7 @@ const EditProductModal = ({
             )}
           />
           <Controller
-            name="qtyOnHand"
+            name="quantityOnHand"
             control={control}
             rules={{
               required: "Qty is required",

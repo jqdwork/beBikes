@@ -16,8 +16,6 @@ import Salespersons from "./pages/SalesPersons";
 import Customers from "./pages/Customers";
 import Reports from "./pages/Report";
 
-const drawerWidth = 240;
-
 const navItems = [
   { label: "Sales", path: "/sales" },
   { label: "Products", path: "/products" },
@@ -44,11 +42,12 @@ const App = () => {
         <Drawer
           variant="permanent"
           sx={{
-            width: drawerWidth,
+            width: { xs: 60, sm: 180, md: 240 },
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
-              width: drawerWidth,
+              width: { xs: 60, sm: 180, md: 240 },
               boxSizing: "border-box",
+              overflowX: "hidden",
             },
           }}
         >

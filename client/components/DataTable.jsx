@@ -15,7 +15,12 @@ const DataTable = ({ columns = [], data = [] }) => {
         <TableHead>
           <TableRow>
             {columns?.map((col) => (
-              <TableCell key={col.key}>{col.header}</TableCell>
+              <TableCell
+                key={col.key}
+                sx={{ fontWeight: "bold", color: "#1976d2", fontSize: "18px" }}
+              >
+                {col.header}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
