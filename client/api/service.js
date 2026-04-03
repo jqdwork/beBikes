@@ -1,5 +1,4 @@
 const API_BASE = import.meta.env.VITE_API_BASE;
-console.log("API_BASE:", API_BASE); // add this
 
 export const request = async (method, path, body) => {
   const resp = await fetch(`${API_BASE}${path}`, {
