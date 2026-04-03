@@ -10,7 +10,7 @@ import {
 const app = express();
 const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
-  "https://white-water-0cb109f1e.2.azurestaticapps.net",
+  "be-spoked-bikes-one.vercel.app",
   "http://localhost:5173",
 ];
 
