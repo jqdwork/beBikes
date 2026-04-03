@@ -11,8 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 //allow origins
 const allowedOrigins = [
-  "https://be-spoked-bikes-one.vercel.app",
-  "https://be-spoked-bikes-axwedo2io-jqdwork.vercel.app",
+  "https://be-bikes.vercel.app",
+  "https://be-bikes-d6epktefw-jqdwork.vercel.app",
   "http://localhost:5173",
 ];
 
