@@ -9,6 +9,7 @@ import {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 //allow origins
 const allowedOrigins = [
   "https://be-spoked-bikes-one.vercel.app",
@@ -21,10 +22,7 @@ app.use(
   cors({
     origin(origin, callback) {
       if (!origin) return callback(null, true);
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.endsWith(".vercel.app") // ✅ covers all vercel URLs forever
-      ) {
+      if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
@@ -42,3 +40,4 @@ app.use("/api/salesPersons", salePersonsRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
