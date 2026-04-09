@@ -1,4 +1,4 @@
-# BeSpoked Bikes Sales Tracker
+# BeBikes Sales Tracker
 
 A simple React dashboard for beSpoked Bike Sales Tracking.
 
