@@ -19,4 +19,4 @@ npm run dev
 
 ## Live Demo
 
-🌐 https://bebikes-tracker.vercel.app
+🌐 [https://bebikes-tracker.vercel.app](https://be-spoked-bikes-one.vercel.app/)
